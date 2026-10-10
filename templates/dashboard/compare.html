@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Product Comparison - AI Shopping Assistant{% endblock %}
+{% block header_title %}Full Specification & Matrix Comparison{% endblock %}
+
+{% block content %}
+<div class="compare-page-container">
+    {% if products and products|length > 0 %}
+
+    <!-- Winner Recommendation Highlight Banner -->
+    {% if winner %}
+    <div class="winner-banner">
+        <div class="winner-badge"><i class="fa-solid fa-trophy"></i> AI Winner Recommendation</div>
+        <div class="winner-content">
+            <h3>{{ winner.name }}</h3>
+            <p>{{ winner.reason }}</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Product Summary Header Cards -->
+    <div class="comparison-products-header">
+        <div class="spec-label-col">
+            <h4>Compared Items</h4>
+            <span>Showing all {{ products|length }} items</span>
+        </div>
+        <div class="product-header-cards">
+            {% for p in products %}
+            <div class="compare-header-card">
+                <button class="remove-card-btn" onclick="removeFromComparisonTray('{{ p.id }}')" title="Remove from comparison">&times;</button>
+                <img src="{{ p.image_url }}" alt="{{ p.name }}" class="compare-img" onerror="this.onerror=null; this.src='/static/images/no-image.png';">
+                <h5>{{ p.name }}</h5>
+                <span class="compare-price">{{ p.currency }}{{ "{:,.0f}".format(p.price) }}</span>
+                <span class="compare-rating"><i class="fa-solid fa-star"></i> {{ p.rating }} ({{ p.review_count }})</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Complete Specification Matrix Table -->
+    <div class="comparison-matrix-card">
+        <div class="matrix-title-bar">
+            <h3><i class="fa-solid fa-list-check"></i> Complete Specification & Feature Matrix</h3>
+            <span class="matrix-subtitle">Includes all technical specifications, general information, pricing, and features</span>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th style="width: 22%;">Specification / Feature</th>
+                        {% for p in products %}
+                        <th style="width: {{ 78 / products|length }}%;">{{ p.name }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set current_section = namespace(name='') %}
+                    {% for row in matrix %}
+                        {% if row.section and row.section != current_section.name %}
+                            {% set current_section.name = row.section %}
+                            <tr class="section-divider-row">
+                                <td colspan="{{ products|length + 1 }}" class="section-title">
+                                    <i class="fa-solid fa-layer-group"></i> {{ current_section.name }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td class="spec-name"><strong>{{ row.feature }}</strong></td>
+                            {% for p in products %}
+                            <td class="spec-val">
+                                {% if row.values[p.id] == 'N/A' %}
+                                <span class="text-muted">N/A</span>
+                                {% else %}
+                                {{ row.values[p.id] }}
+                                {% endif %}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pros and Cons Grid -->
+    <div class="section-container mt-4">
+        <h3><i class="fa-solid fa-scale-balanced"></i> Pros & Cons Analysis</h3>
+        <div class="pros-cons-grid">
+            {% for p in products %}
+            {% set analysis = product_analysis[p.id] %}
+            <div class="pro-con-card">
+                <h4>{{ p.name }}</h4>
+                <div class="score-badge">Specification Match Score: {{ analysis.score }}%</div>
+
+                <div class="pro-section">
+                    <h5><i class="fa-solid fa-thumbs-up text-success"></i> Key Advantages</h5>
+                    <ul>
+                        {% for pro in analysis.pros %}
+                        <li><i class="fa-solid fa-check text-success"></i> {{ pro }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="con-section">
+                    <h5><i class="fa-solid fa-thumbs-down text-danger"></i> Considerations</h5>
+                    <ul>
+                        {% for con in analysis.cons %}
+                        <li><i class="fa-solid fa-triangle-exclamation text-warning"></i> {{ con }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% else %}
+    <div class="empty-state">
+        <i class="fa-solid fa-scale-balanced empty-icon"></i>
+        <h3>No products selected for comparison</h3>
+        <p>Go to the Product Search page or Dashboard and click "+ Compare" on 2 or more products to generate a full specification matrix.</p>
+        <a href="{{ url_for('search') }}" class="btn btn-primary">Go to Product Search</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

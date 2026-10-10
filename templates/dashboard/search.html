@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results - AI Shopping Assistant{% endblock %}
+{% block header_title %}Product Search & Filters{% endblock %}
+
+{% block content %}
+<div class="search-page-header">
+    <form action="{{ url_for('search') }}" method="GET" class="search-bar-main">
+        <div class="search-input-group">
+            <i class="fa-solid fa-magnifying-glass search-ai-icon"></i>
+            <input type="text" name="q" value="{{ intent.raw_query }}" class="nl-input" placeholder="Search products in natural language..." autocomplete="off">
+            <button type="submit" class="btn btn-primary search-submit-btn">Search</button>
+        </div>
+    </form>
+
+    <!-- Extracted AI Intent Badges Bar -->
+    {% if intent.raw_query %}
+    <div class="ai-intent-card">
+        <div class="intent-header">
+            <i class="fa-solid fa-brain accent-icon"></i>
+            <span>AI Requirement Analysis & Structure:</span>
+            <span class="parsed-by-badge">{{ intent.parsed_by }}</span>
+        </div>
+        <div class="intent-badges">
+            {% if intent.category != 'All' %}
+            <span class="intent-badge category"><i class="fa-solid fa-layer-group"></i> Category: {{ intent.category }}</span>
+            {% endif %}
+
+            {% if intent.max_price %}
+            <span class="intent-badge price"><i class="fa-solid fa-tag"></i> Max Budget: ₹{{ "{:,.0f}".format(intent.max_price) }}</span>
+            {% endif %}
+
+            {% if intent.brand %}
+            <span class="intent-badge brand"><i class="fa-solid fa-copyright"></i> Brand: {{ intent.brand }}</span>
+            {% endif %}
+
+            {% for spec in intent.mandatory_specs %}
+            <span class="intent-badge spec"><i class="fa-solid fa-microchip"></i> {{ spec }}</span>
+            {% endfor %}
+
+            <span class="intent-badge usecase"><i class="fa-solid fa-bullseye"></i> Use-case: {{ intent.intended_use }}</span>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<div class="search-layout">
+    <!-- Filter Sidebar -->
+    <aside class="filter-sidebar">
+        <form action="{{ url_for('search') }}" method="GET" id="filterForm">
+            <input type="hidden" name="q" value="{{ intent.raw_query }}">
+
+            <div class="filter-group">
+                <label class="filter-label"><i class="fa-solid fa-filter"></i> Category</label>
+                <select name="category" class="form-control" onchange="this.form.submit()">
+                    <option value="All" {% if selected_category == 'All' %}selected{% endif %}>All Categories</option>
+                    <option value="Laptops" {% if selected_category == 'Laptops' %}selected{% endif %}>Laptops</option>
+                    <option value="Smartphones" {% if selected_category == 'Smartphones' %}selected{% endif %}>Smartphones</option>
+                    <option value="Headphones" {% if selected_category == 'Headphones' %}selected{% endif %}>Headphones & Audio</option>
+                    <option value="Smartwatches" {% if selected_category == 'Smartwatches' %}selected{% endif %}>Smartwatches</option>
+                    <option value="Tablets" {% if selected_category == 'Tablets' %}selected{% endif %}>Tablets</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label"><i class="fa-solid fa-indian-rupee-sign"></i> Max Price (₹)</label>
+                <input type="number" name="max_price" value="{{ selected_max_price or '' }}" placeholder="e.g. 50000" class="form-control" step="1000">
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label"><i class="fa-solid fa-sort"></i> Sort By</label>
+                <select name="sort_by" class="form-control" onchange="this.form.submit()">
+                    <option value="relevance" {% if selected_sort == 'relevance' %}selected{% endif %}>AI Relevance Match</option>
+                    <option value="price_asc" {% if selected_sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+                    <option value="price_desc" {% if selected_sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+                    <option value="rating_desc" {% if selected_sort == 'rating_desc' %}selected{% endif %}>Customer Rating</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Apply Filters</button>
+            <a href="{{ url_for('search') }}" class="btn btn-secondary btn-block text-center mt-2">Clear All Filters</a>
+        </form>
+    </aside>
+
+    <!-- Search Results Grid Section -->
+    <section class="search-results-section">
+        <div class="results-meta-bar">
+            <span class="results-count">Showing <strong>{{ total_count }}</strong> matching products</span>
+            <span class="mode-indicator">Mode: {% if session.get('is_live_mode') %}🌐 Live Market API Feed{% else %}📦 Demo Catalog Inventory{% endif %}</span>
+        </div>
+
+        {% if products %}
+        <div class="products-grid">
+            {% for product in products %}
+            <div class="product-card">
+                <div class="card-image-wrapper">
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-img" onerror="this.onerror=null; this.src='/static/images/no-image.png';">
+                    <span class="source-tag {{ 'live-tag' if product.is_live else 'demo-tag' }}">
+                        {{ product.source }}
+                    </span>
+                    <span class="match-score-badge" title="AI Specification Match Score">
+                        <i class="fa-solid fa-bolt"></i> {{ product.match_score }}% Match
+                    </span>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-meta">
+                        <span class="category-badge">{{ product.category }}</span>
+                        <span class="rating-badge"><i class="fa-solid fa-star"></i> {{ product.rating }} ({{ product.review_count }})</span>
+                    </div>
+
+                    <h4 class="product-title" title="{{ product.name }}">{{ product.name }}</h4>
+
+                    <div class="specs-preview">
+                        {% for key, val in product.specs.items() %}
+                            {% if loop.index <= 4 %}
+                            <span class="spec-pill"><strong>{{ key }}:</strong> {{ val }}</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="price-container">
+                            <span class="currency-symbol">{{ product.currency }}</span>
+                            <span class="price-amount">{{ "{:,.0f}".format(product.price) }}</span>
+                        </div>
+
+                        <div class="card-actions">
+                            <button class="btn btn-outline-primary btn-sm" onclick='addToComparison({{ product | tojson }})'>
+                                <i class="fa-solid fa-plus"></i> Compare
+                            </button>
+                            <a href="{{ url_for('recommendations_page', product_id=product.id) }}" class="btn btn-secondary btn-sm" title="Get Recommendations">
+                                <i class="fa-solid fa-lightbulb"></i> Recs
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if total_pages > 1 %}
+        <div class="pagination">
+            {% if page > 1 %}
+            <a href="{{ url_for('search', q=intent.raw_query, category=selected_category, max_price=selected_max_price, sort_by=selected_sort, page=page-1) }}" class="page-link">&laquo; Prev</a>
+            {% endif %}
+
+            <span class="page-current">Page {{ page }} of {{ total_pages }}</span>
+
+            {% if page < total_pages %}
+            <a href="{{ url_for('search', q=intent.raw_query, category=selected_category, max_price=selected_max_price, sort_by=selected_sort, page=page+1) }}" class="page-link">Next &raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="empty-state">
+            <i class="fa-solid fa-box-open empty-icon"></i>
+            <h3>No products found matching your search criteria</h3>
+            <p>Try adjusting your price filter, selecting a different category, or switching to Live Market Feed mode.</p>
+            <a href="{{ url_for('search') }}" class="btn btn-primary">Reset Filters</a>
+        </div>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

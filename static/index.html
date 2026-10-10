@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Multi-Agent Product Comparison Studio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/styles.css?v=2.1">
+</head>
+<body class="min-h-screen font-sans flex flex-col text-slate-900 bg-slate-50">
+
+    <!-- Top Navigation Header -->
+    <header class="border-b border-purple-100 bg-white/90 backdrop-blur sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="scrollToTop()">
+                <div class="bg-gradient-to-tr from-purple-600 to-indigo-600 p-2.5 rounded-xl shadow-md text-white">
+                    <i class="fa-solid fa-robot text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-slate-900 tracking-tight">
+                        Multi-Agent Product Assistant (₹ INR)
+                    </h1>
+                    <p class="text-xs text-slate-600">Requirements Engine • Rupee Catalog Filters • Spec Matrix</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <span class="hidden sm:inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-800 border border-purple-200">
+                    <span class="w-2 h-2 mr-2 rounded-full bg-purple-600 animate-pulse"></span>
+                    Multi-Agent Active
+                </span>
+
+                <!-- Dynamic Auth Header State -->
+                <div id="auth-nav-container" class="flex items-center space-x-2">
+                    <button onclick="demoQuickLogin()" class="px-4 py-2 bg-purple-600 text-white text-xs font-bold rounded-lg shadow hover:bg-purple-700 transition">
+                        Open Dashboard <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- STAGE 1: Dedicated Sign In & Sign Up Auth Page -->
+    <div id="auth-page" class="flex-grow flex items-center justify-center py-10 px-4 bg-gradient-to-br from-purple-100/70 via-slate-50 to-indigo-50/60">
+        <div class="max-w-4xl w-full grid grid-cols-1 md:grid-cols-12 bg-white rounded-3xl border-2 border-purple-200 shadow-2xl overflow-hidden">
+            
+            <!-- Left Info Panel -->
+            <div class="md:col-span-5 bg-gradient-to-br from-purple-700 via-indigo-700 to-purple-900 p-8 text-white flex flex-col justify-between relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+                
+                <div class="space-y-4">
+                    <div class="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center">
+                        <i class="fa-solid fa-shield-halved text-2xl text-purple-200"></i>
+                    </div>
+                    <h3 class="text-2xl font-black tracking-tight leading-snug">
+                        AI Shopping & Comparison Portal
+                    </h3>
+                    <p class="text-xs text-purple-100/90 leading-relaxed">
+                        Sign in or create an account to access the AI multi-agent product studio, Rupee catalog search, and spec matrix generator.
+                    </p>
+                </div>
+
+                <div class="space-y-3 pt-6 border-t border-purple-500/30">
+                    <div class="flex items-center space-x-2.5 text-xs text-purple-100">
+                        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                        <span>3-Agent Automated Parsing</span>
+                    </div>
+                    <div class="flex items-center space-x-2.5 text-xs text-purple-100">
+                        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                        <span>Indian Rupee (₹) Pricing</span>
+                    </div>
+                    <div class="flex items-center space-x-2.5 text-xs text-purple-100">
+                        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                        <span>Side-by-Side Spec Matrix</span>
+                    </div>
+                </div>
+
+                <div class="pt-6">
+                    <button type="button" onclick="demoQuickLogin()" class="w-full py-3 bg-white text-purple-900 hover:bg-purple-50 rounded-xl text-xs font-extrabold shadow-md transition flex items-center justify-center">
+                        <i class="fa-solid fa-bolt text-amber-500 mr-2 text-sm"></i> Click Here to Open Dashboard Immediately
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Form Panel -->
+            <div class="md:col-span-7 p-6 sm:p-8 flex flex-col justify-center">
+                
+                <!-- Auth Tabs -->
+                <div class="flex border-b border-slate-200 mb-6">
+                    <button type="button" onclick="switchAuthPageTab('signin')" id="auth-tab-signin" class="w-1/2 py-3 font-black text-base text-purple-700 border-b-2 border-purple-600 transition">
+                        <i class="fa-solid fa-right-to-bracket mr-1.5"></i> Sign In
+                    </button>
+                    <button type="button" onclick="switchAuthPageTab('signup')" id="auth-tab-signup" class="w-1/2 py-3 font-semibold text-base text-slate-500 border-b-2 border-transparent hover:text-slate-800 transition">
+                        <i class="fa-solid fa-user-plus mr-1.5"></i> Sign Up
+                    </button>
+                </div>
+
+                <!-- Sign In Form -->
+                <form id="auth-page-signin-form" onsubmit="return handleAuthPageSubmit(event, 'signin')" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-800 mb-1">Email Address</label>
+                        <input type="email" id="signin-email" required placeholder="alex@example.com" value="alex@example.com" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-800 mb-1">Password</label>
+                        <input type="password" id="signin-password" required placeholder="••••••••" value="password123" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600">
+                    </div>
+                    <div class="flex items-center justify-between text-xs">
+                        <label class="inline-flex items-center text-slate-600 font-medium cursor-pointer">
+                            <input type="checkbox" checked class="rounded border-slate-300 text-purple-600 focus:ring-purple-500 mr-2">
+                            Keep me signed in
+                        </label>
+                        <a href="#" onclick="demoQuickLogin(); return false;" class="text-purple-700 font-bold hover:underline">Skip to Dashboard</a>
+                    </div>
+                    <button type="submit" onclick="demoQuickLogin()" class="w-full py-3.5 bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm rounded-xl shadow-lg shadow-purple-600/25 transition flex items-center justify-center">
+                        <span>Sign In & Open Dashboard</span>
+                        <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                    </button>
+                </form>
+
+                <!-- Sign Up Form -->
+                <form id="auth-page-signup-form" onsubmit="return handleAuthPageSubmit(event, 'signup')" class="space-y-4 hidden">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-800 mb-1">Full Name</label>
+                        <input type="text" id="signup-name" required placeholder="Alex Johnson" value="Alex Johnson" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-800 mb-1">Email Address</label>
+                        <input type="email" id="signup-email" required placeholder="alex@example.com" value="alex@example.com" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-800 mb-1">Create Password</label>
+                        <input type="password" id="signup-password" required placeholder="At least 6 characters..." value="password123" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600">
+                    </div>
+                    <button type="submit" onclick="demoQuickLogin()" class="w-full py-3.5 bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm rounded-xl shadow-lg shadow-purple-600/25 transition flex items-center justify-center">
+                        <span>Create Account & Open Dashboard</span>
+                        <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                    </button>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- STAGE 2: Main Dashboard Template -->
+    <main id="app-main-content" class="hidden flex-grow max-w-7xl w-full mx-auto px-4 py-8 space-y-8">
+
+        <!-- Studio Requirement Input Hero -->
+        <section class="bg-white border border-purple-100 rounded-2xl p-6 shadow-md relative overflow-hidden">
+            <div class="absolute -right-20 -top-20 w-80 h-80 bg-purple-200/40 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-lg font-bold text-slate-900 flex items-center">
+                    <i class="fa-solid fa-wand-magic-sparkles text-purple-600 mr-2"></i>
+                    State Your Product Requirements
+                </h2>
+                <div id="user-welcome-badge" class="text-xs font-extrabold text-purple-800 bg-purple-100 px-3.5 py-1 rounded-full border border-purple-200 shadow-sm">
+                    Welcome back!
+                </div>
+            </div>
+            
+            <p class="text-sm text-slate-600 mb-4">
+                Describe your requirements in plain English. Our 3-Agent AI team parses constraints in Indian Rupees (₹), searches catalog images & specs, filters candidate items, and renders an interactive comparison matrix.
+            </p>
+
+            <form id="requirement-form" class="space-y-4">
+                <div class="relative">
+                    <textarea id="requirement-input" rows="3" 
+                        class="w-full bg-purple-50/40 border border-slate-300 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-500 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600 text-sm transition"
+                        placeholder="e.g. I am looking for a gaming laptop under ₹1,50,000 with at least 16GB RAM, RTX graphics, and good battery life for college..."></textarea>
+                    
+                    <button type="submit" id="run-pipeline-btn"
+                        class="absolute right-3 bottom-3 px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm rounded-lg shadow-md transition flex items-center">
+                        <span>Analyze & Compare</span>
+                        <i class="fa-solid fa-paper-plane ml-2 text-xs"></i>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Pre-built Sample Prompts -->
+            <div class="mt-4 flex flex-wrap items-center gap-2">
+                <span class="text-xs font-semibold text-slate-700">Sample Requirements (₹):</span>
+                <button type="button" class="sample-prompt-btn px-2.5 py-1 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg text-xs text-purple-900 font-medium transition">
+                    💻 Gaming laptop under ₹1,50,000 with RTX GPU & 16GB RAM
+                </button>
+                <button type="button" class="sample-prompt-btn px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg text-xs text-indigo-900 font-medium transition">
+                    📱 Flagship smartphone under ₹80,000 with 50MP camera
+                </button>
+                <button type="button" class="sample-prompt-btn px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg text-xs text-emerald-900 font-medium transition">
+                    🎧 Wireless ANC headphones under ₹30,000 with LDAC codec
+                </button>
+                <button type="button" class="sample-prompt-btn px-2.5 py-1 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg text-xs text-amber-900 font-medium transition">
+                    🖥️ 4K USB-C monitor under ₹40,000 for color accurate editing
+                </button>
+            </div>
+        </section>
+
+        <!-- Agent Workflow Tracing Pipeline (Step 1 -> Step 2 -> Step 3) -->
+        <section id="pipeline-traces-container" class="hidden space-y-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center">
+                <i class="fa-solid fa-diagram-project text-purple-600 mr-2"></i>
+                Multi-Agent Execution Pipeline Trace
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="agent-steps-grid">
+                <!-- Step 1 Card -->
+                <div id="step-1-card" class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm transition">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold px-2 py-0.5 rounded bg-purple-100 text-purple-800 border border-purple-200">AGENT 1</span>
+                        <span class="text-xs font-medium text-slate-500" id="step-1-status"><i class="fa-solid fa-circle-notch fa-spin text-purple-600"></i> Processing...</span>
+                    </div>
+                    <h4 class="font-bold text-sm text-slate-900">Requirements Analyst</h4>
+                    <p class="text-xs text-slate-600 mt-1" id="step-1-summary">Parsing prompt constraints & budget...</p>
+                    <div class="mt-3 text-xs font-mono bg-slate-50 border border-slate-200 p-2.5 rounded text-slate-800 max-h-24 overflow-y-auto" id="step-1-trace">
+                        Waiting for execution...
+                    </div>
+                </div>
+
+                <!-- Step 2 Card -->
+                <div id="step-2-card" class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm transition opacity-60">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 border border-indigo-200">AGENT 2</span>
+                        <span class="text-xs font-medium text-slate-500" id="step-2-status">Queued</span>
+                    </div>
+                    <h4 class="font-bold text-sm text-slate-900">Catalog Search & Filter</h4>
+                    <p class="text-xs text-slate-600 mt-1" id="step-2-summary">Querying SQLite catalog & scoring...</p>
+                    <div class="mt-3 text-xs font-mono bg-slate-50 border border-slate-200 p-2.5 rounded text-slate-800 max-h-24 overflow-y-auto" id="step-2-trace">
+                        Waiting for execution...
+                    </div>
+                </div>
+
+                <!-- Step 3 Card -->
+                <div id="step-3-card" class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm transition opacity-60">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200">AGENT 3</span>
+                        <span class="text-xs font-medium text-slate-500" id="step-3-status">Queued</span>
+                    </div>
+                    <h4 class="font-bold text-sm text-slate-900">Comparison Synthesizer</h4>
+                    <p class="text-xs text-slate-600 mt-1" id="step-3-summary">Building spec matrix & recommendations...</p>
+                    <div class="mt-3 text-xs font-mono bg-slate-50 border border-slate-200 p-2.5 rounded text-slate-800 max-h-24 overflow-y-auto" id="step-3-trace">
+                        Waiting for execution...
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Results Section -->
+        <section id="results-container" class="hidden space-y-6">
+            
+            <!-- Summary Winner Banner with Product Image -->
+            <div id="winner-banner" class="bg-white border-2 border-purple-300 rounded-2xl p-6 shadow-lg relative overflow-hidden">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div class="flex items-start space-x-4">
+                        <img id="winner-img" src="" alt="Winner Product" class="w-24 h-24 object-cover rounded-xl border border-slate-200 shadow-sm shrink-0">
+                        <div class="space-y-1.5">
+                            <span class="px-3 py-0.5 bg-amber-100 border border-amber-300 text-amber-900 text-xs font-bold rounded-full inline-flex items-center">
+                                <i class="fa-solid fa-trophy mr-1 text-amber-600"></i> Top Agent Recommended Winner
+                            </span>
+                            <h3 class="text-2xl font-bold text-slate-900" id="winner-name">ApexBook Pro 16</h3>
+                            <p class="text-sm text-slate-700 max-w-xl" id="winner-summary">
+                                Top performing match based on requirement parameters.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-6 bg-purple-50/60 p-4 rounded-xl border border-purple-100 shrink-0">
+                        <div>
+                            <div class="text-xs text-slate-600 font-semibold uppercase tracking-wide">Match Score</div>
+                            <div class="text-2xl font-black text-purple-700" id="winner-score">98%</div>
+                        </div>
+                        <div class="h-8 w-px bg-purple-200"></div>
+                        <div>
+                            <div class="text-xs text-slate-600 font-semibold uppercase tracking-wide">Price (INR)</div>
+                            <div class="text-2xl font-black text-slate-900" id="winner-price">₹1,24,999</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabs: Matrix View vs Pros/Cons View vs Shortlisted Cards -->
+            <div class="border-b border-slate-300 flex items-center justify-between">
+                <div class="flex space-x-6">
+                    <button onclick="switchTab('matrix-tab')" id="tab-btn-matrix" class="py-3 font-bold text-sm text-purple-700 border-b-2 border-purple-600 transition">
+                        <i class="fa-solid fa-table-cells mr-1.5"></i> Spec Comparison Matrix
+                    </button>
+                    <button onclick="switchTab('proscons-tab')" id="tab-btn-proscons" class="py-3 font-semibold text-sm text-slate-600 border-b-2 border-transparent hover:text-slate-900 transition">
+                        <i class="fa-solid fa-scale-balanced mr-1.5"></i> Pros & Cons Analysis
+                    </button>
+                    <button onclick="switchTab('candidates-tab')" id="tab-btn-candidates" class="py-3 font-semibold text-sm text-slate-600 border-b-2 border-transparent hover:text-slate-900 transition">
+                        <i class="fa-solid fa-boxes-stacked mr-1.5"></i> Candidate Cards
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab 1: Spec Matrix Table -->
+            <div id="tab-content-matrix" class="block overflow-x-auto bg-white border border-slate-200 rounded-2xl shadow-md">
+                <table class="w-full text-left text-sm text-slate-900 border-collapse">
+                    <thead class="bg-slate-100 text-xs uppercase tracking-wider text-slate-700 border-b border-slate-300">
+                        <tr id="matrix-header-row">
+                            <th class="p-4 w-48 font-bold bg-slate-100">Feature / Spec</th>
+                            <!-- Product Headers dynamically inserted here -->
+                        </tr>
+                    </thead>
+                    <tbody id="matrix-body" class="divide-y divide-slate-200 font-medium">
+                        <!-- Spec rows dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tab 2: Pros & Cons View -->
+            <div id="tab-content-proscons" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamic Pros & Cons Cards -->
+            </div>
+
+            <!-- Tab 3: Candidate Cards View -->
+            <div id="tab-content-candidates" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamic Candidate Product Cards -->
+            </div>
+
+        </section>
+
+        <!-- Product Database Catalog Section with Images -->
+        <section id="catalog-section" class="bg-white border border-purple-100 rounded-2xl p-6 shadow-md space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900 flex items-center">
+                        <i class="fa-solid fa-store text-purple-600 mr-2"></i>
+                        All Products Database Catalog
+                    </h3>
+                    <p class="text-xs text-slate-600">Browse all products in Rupees (₹), filter by max budget, or select multiple items to compare manually.</p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-3">
+                    <select id="catalog-category-filter" class="bg-slate-50 border border-slate-300 text-xs font-semibold text-slate-800 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-600">
+                        <option value="All">All Categories</option>
+                    </select>
+
+                    <input type="number" id="catalog-max-price" placeholder="Max Price (₹)" class="w-32 bg-slate-50 border border-slate-300 text-xs font-semibold text-slate-800 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-600">
+
+                    <input type="text" id="catalog-search-input" placeholder="Search product..." class="w-44 bg-slate-50 border border-slate-300 text-xs font-semibold text-slate-800 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-600">
+
+                    <button id="catalog-filter-btn" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs rounded-lg shadow transition">
+                        Filter
+                    </button>
+                    <button id="compare-selected-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded-lg shadow transition hidden">
+                        Compare Selected (<span id="selected-count">0</span>)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Grid displaying all products -->
+            <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Loaded via JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-purple-100 bg-white py-6 text-center text-xs text-slate-600">
+        <p>Multi-Agent Product Assistant Engine • Instant Dashboard Access Edition</p>
+    </footer>
+
+    <!-- Force Cache Refresh -->
+    <script src="/static/app.js?v=2.5"></script>
+</body>
+</html>

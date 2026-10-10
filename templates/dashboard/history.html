@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Search History - AI Shopping Assistant{% endblock %}
+{% block header_title %}Natural Language Search History{% endblock %}
+
+{% block content %}
+<div class="history-page-container">
+    <div class="section-header">
+        <div>
+            <h2><i class="fa-solid fa-clock-rotate-left"></i> Your Natural Language Search Log</h2>
+            <p>View your past query requirements, extracted parameters, and re-run searches instantly.</p>
+        </div>
+
+        {% if history_items %}
+        <form action="{{ url_for('clear_history') }}" method="POST" onsubmit="return confirm('Clear your entire search history?')">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <button type="submit" class="btn btn-danger btn-sm">
+                <i class="fa-solid fa-trash"></i> Clear History
+            </button>
+        </form>
+        {% endif %}
+    </div>
+
+    {% if history_items %}
+    <div class="history-list">
+        {% for item in history_items %}
+        <div class="history-item-card">
+            <div class="history-main">
+                <div class="history-query-text">
+                    <i class="fa-solid fa-magnifying-glass accent-icon"></i>
+                    <strong>"{{ item.raw_query }}"</strong>
+                </div>
+
+                <div class="history-meta">
+                    <span class="timestamp"><i class="fa-regular fa-clock"></i> {{ item.timestamp.strftime('%d %b %Y, %I:%M %p') }}</span>
+                    <span class="results-badge"><i class="fa-solid fa-box"></i> {{ item.results_count }} Results</span>
+                </div>
+            </div>
+
+            <!-- Extracted Intent Tags -->
+            {% set intent = item.get_intent_dict() %}
+            {% if intent %}
+            <div class="history-intent-tags">
+                {% if intent.get('category') and intent.get('category') != 'All' %}
+                <span class="tag"><i class="fa-solid fa-layer-group"></i> {{ intent.get('category') }}</span>
+                {% endif %}
+                {% if intent.get('max_price') %}
+                <span class="tag"><i class="fa-solid fa-tag"></i> Max ₹{{ "{:,.0f}".format(intent.get('max_price')) }}</span>
+                {% endif %}
+                {% if intent.get('brand') %}
+                <span class="tag"><i class="fa-solid fa-copyright"></i> {{ intent.get('brand') }}</span>
+                {% endif %}
+                {% if intent.get('intended_use') %}
+                <span class="tag"><i class="fa-solid fa-bullseye"></i> {{ intent.get('intended_use') }}</span>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <div class="history-actions">
+                <a href="{{ url_for('search', q=item.raw_query) }}" class="btn btn-outline-primary btn-sm">
+                    <i class="fa-solid fa-arrow-rotate-right"></i> Re-Run Search
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="empty-state">
+        <i class="fa-solid fa-history empty-icon"></i>
+        <h3>No search history recorded yet</h3>
+        <p>Your natural language search queries and AI requirement analyses will appear here.</p>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Try a Natural Language Search</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,199 @@
+[
+  {
+    "id": "prod-101",
+    "name": "ApexBook Pro 16",
+    "category": "Laptops",
+    "brand": "TechApex",
+    "price": 124999.00,
+    "rating": 4.8,
+    "review_count": 342,
+    "image_url": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&auto=format&fit=crop&q=80",
+    "tags": ["gaming", "workstation", "portable", "high-performance"],
+    "specs": {
+      "processor": "Intel Core i9-13900H",
+      "ram_gb": 32,
+      "storage_gb": 1000,
+      "gpu": "Nvidia RTX 4070 8GB",
+      "display": "16 inch QHD+ 165Hz",
+      "battery_hours": 8,
+      "weight_kg": 2.1
+    },
+    "description": "Premium high-performance workstation laptop designed for software development, video editing, and AAA gaming."
+  },
+  {
+    "id": "prod-102",
+    "name": "UltraLite Air 14",
+    "category": "Laptops",
+    "brand": "TechApex",
+    "price": 74999.00,
+    "rating": 4.6,
+    "review_count": 512,
+    "image_url": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&auto=format&fit=crop&q=80",
+    "tags": ["student", "ultrabook", "lightweight", "battery"],
+    "specs": {
+      "processor": "AMD Ryzen 7 7730U",
+      "ram_gb": 16,
+      "storage_gb": 512,
+      "gpu": "AMD Radeon Vega 8",
+      "display": "14 inch FHD IPS Touch",
+      "battery_hours": 15,
+      "weight_kg": 1.25
+    },
+    "description": "Featherlight ultrabook featuring exceptional 15-hour battery endurance and snappy performance for college students and professionals."
+  },
+  {
+    "id": "prod-103",
+    "name": "CreatorStudio Pro 15",
+    "category": "Laptops",
+    "brand": "Visionary",
+    "price": 109999.00,
+    "rating": 4.7,
+    "review_count": 189,
+    "image_url": "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=500&auto=format&fit=crop&q=80",
+    "tags": ["content-creation", "oled", "design", "video-editing"],
+    "specs": {
+      "processor": "Intel Core i7-13700H",
+      "ram_gb": 16,
+      "storage_gb": 1000,
+      "gpu": "Nvidia RTX 4050 6GB",
+      "display": "15.6 inch 3.5K OLED Touch",
+      "battery_hours": 9,
+      "weight_kg": 1.8
+    },
+    "description": "Vibrant 3.5K OLED display laptop optimized for photo editing, 4K color-graded video rendering, and 3D animation."
+  },
+  {
+    "id": "prod-104",
+    "name": "Zenith Phone 15 Pro",
+    "category": "Smartphones",
+    "brand": "Zenith",
+    "price": 79999.00,
+    "rating": 4.9,
+    "review_count": 890,
+    "image_url": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&auto=format&fit=crop&q=80",
+    "tags": ["flagship", "camera", "5g", "fast-charging"],
+    "specs": {
+      "ram_gb": 12,
+      "storage_gb": 256,
+      "screen_size": "6.7 inch LTPO OLED 120Hz",
+      "camera": "50MP Triple Lens 5x Optical Zoom",
+      "battery_mah": 5000,
+      "charging_w": 67
+    },
+    "description": "Flagship smartphone equipped with advanced computational photography, titanium frame, and fast 67W charging."
+  },
+  {
+    "id": "prod-105",
+    "name": "Pulse X Lite",
+    "category": "Smartphones",
+    "brand": "Zenith",
+    "price": 34999.00,
+    "rating": 4.3,
+    "review_count": 420,
+    "image_url": "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500&auto=format&fit=crop&q=80",
+    "tags": ["budget", "5g", "value", "long-battery"],
+    "specs": {
+      "ram_gb": 8,
+      "storage_gb": 128,
+      "screen_size": "6.5 inch FHD+ 90Hz",
+      "camera": "48MP Main + 8MP Wide",
+      "battery_mah": 5200,
+      "charging_w": 33
+    },
+    "description": "Budget-friendly smartphone packing 5G connectivity, crisp 90Hz display, and robust 5200mAh battery."
+  },
+  {
+    "id": "prod-106",
+    "name": "AcousticSilence ANC 900",
+    "category": "Headphones",
+    "brand": "SoundCraft",
+    "price": 29999.00,
+    "rating": 4.8,
+    "review_count": 678,
+    "image_url": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=80",
+    "tags": ["anc", "wireless", "audiophile", "travel"],
+    "specs": {
+      "type": "Over-Ear Wireless",
+      "anc_level": "Adaptive Hybrid ANC",
+      "battery_hours": 30,
+      "codecs": "LDAC, AAC, aptX HD",
+      "mic_count": 6
+    },
+    "description": "Industry-leading active noise-canceling headphones with spatial audio support and ultra-soft memory foam earcups."
+  },
+  {
+    "id": "prod-107",
+    "name": "SoundFit Wireless Buds",
+    "category": "Headphones",
+    "brand": "SoundCraft",
+    "price": 9999.00,
+    "rating": 4.4,
+    "review_count": 310,
+    "image_url": "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500&auto=format&fit=crop&q=80",
+    "tags": ["sports", "earbuds", "waterproof", "budget"],
+    "specs": {
+      "type": "True Wireless Earbuds",
+      "anc_level": "Passive + ENC",
+      "battery_hours": 24,
+      "water_resistance": "IPX7",
+      "codecs": "AAC, SBC"
+    },
+    "description": "Sweatproof and secure-fit wireless earbuds tailored for intense workouts and daily commute."
+  },
+  {
+    "id": "prod-108",
+    "name": "VividVision 27 4K Monitor",
+    "category": "Monitors",
+    "brand": "Visionary",
+    "price": 39999.00,
+    "rating": 4.7,
+    "review_count": 245,
+    "image_url": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500&auto=format&fit=crop&q=80",
+    "tags": ["4k", "ips", "usb-c", "color-accurate"],
+    "specs": {
+      "resolution": "3840x2160 4K UHD",
+      "panel": "IPS 100% sRGB 98% DCI-P3",
+      "refresh_rate_hz": 60,
+      "ports": "USB-C 90W PD, HDMI 2.1, DisplayPort 1.4",
+      "hdr": "HDR 400"
+    },
+    "description": "Professional 27-inch 4K monitor with 90W USB-C single-cable power delivery and factory-calibrated color accuracy."
+  },
+  {
+    "id": "prod-109",
+    "name": "GamePulse 27 Curved 240Hz",
+    "category": "Monitors",
+    "brand": "TechApex",
+    "price": 31999.00,
+    "rating": 4.6,
+    "review_count": 195,
+    "image_url": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500&auto=format&fit=crop&q=80",
+    "tags": ["gaming", "esports", "high-refresh", "curved"],
+    "specs": {
+      "resolution": "2560x1440 QHD",
+      "panel": "Fast VA 1000R Curve",
+      "refresh_rate_hz": 240,
+      "response_time_ms": 1,
+      "ports": "2x HDMI 2.1, 1x DP 1.4"
+    },
+    "description": "Ultra-responsive 240Hz QHD curved gaming monitor designed for fast-paced competitive esports."
+  },
+  {
+    "id": "prod-110",
+    "name": "ErgoStance Pro Office Chair",
+    "category": "Furniture",
+    "brand": "ErgoFlex",
+    "price": 32999.00,
+    "rating": 4.7,
+    "review_count": 450,
+    "image_url": "https://images.unsplash.com/photo-1580481072645-022f9a6d83d0?w=500&auto=format&fit=crop&q=80",
+    "tags": ["ergonomic", "mesh", "lumbar-support", "home-office"],
+    "specs": {
+      "material": "Breathable Korean Mesh",
+      "weight_capacity_kg": 150,
+      "adjustability": "4D Armrests, Dynamic Lumbar, 135 deg Recline",
+      "warranty_years": 5
+    },
+    "description": "Ergonomic mesh chair with self-adjusting dynamic lumbar support and customizable 4D armrests for long desk sessions."
+  }
+]

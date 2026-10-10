@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AI Multi-Agent Shopping Assistant{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body class="bg-navy">
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        {% if current_user.is_authenticated %}
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-robot brand-icon"></i>
+                <div class="brand-text">
+                    <span class="brand-title">ShopAgent</span>
+                    <span class="brand-subtitle">Multi-Agent AI Studio</span>
+                </div>
+            </div>
+
+            <div class="user-chip">
+                <div class="user-avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <span class="user-name">{{ current_user.full_name }}</span>
+                    <span class="user-email">{{ current_user.email }}</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('dashboard') }}" class="nav-item {% if request.endpoint == 'dashboard' %}active{% endif %}">
+                    <i class="fa-solid fa-house"></i> Dashboard
+                </a>
+                <a href="{{ url_for('search') }}" class="nav-item {% if request.endpoint == 'search' %}active{% endif %}">
+                    <i class="fa-solid fa-magnifying-glass"></i> Product Search
+                </a>
+                <a href="{{ url_for('compare_page') }}" class="nav-item {% if request.endpoint == 'compare_page' %}active{% endif %}">
+                    <i class="fa-solid fa-scale-balanced"></i> Compare Products
+                    <span class="badge compare-count-badge" id="compareCountBadge">0</span>
+                </a>
+                <a href="{{ url_for('recommendations_page') }}" class="nav-item {% if request.endpoint == 'recommendations_page' %}active{% endif %}">
+                    <i class="fa-solid fa-lightbulb"></i> Recommendations
+                </a>
+                <a href="{{ url_for('history_page') }}" class="nav-item {% if request.endpoint == 'history_page' %}active{% endif %}">
+                    <i class="fa-solid fa-clock-history"></i> Search History
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="mode-toggle-card">
+                    <div class="mode-header">
+                        <span><i class="fa-solid fa-globe"></i> Search Mode</span>
+                        <label class="switch">
+                            <input type="checkbox" id="liveModeToggle" {% if session.get('is_live_mode') %}checked{% endif %} onchange="toggleLiveMode(this.checked)">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <span class="mode-status" id="modeStatusText">
+                        {% if session.get('is_live_mode') %}⚡ Live Market Feed{% else %}📦 Demo Catalog (50+ items){% endif %}
+                    </span>
+                </div>
+
+                <a href="{{ url_for('logout') }}" class="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+                </a>
+            </div>
+        </aside>
+        {% endif %}
+
+        <!-- Main Content Area -->
+        <main class="main-wrapper {% if not current_user.is_authenticated %}full-width{% endif %}">
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <span class="topbar-title">{% block header_title %}E-Commerce Shopping Assistant{% endblock %}</span>
+                </div>
+                <div class="topbar-right">
+                    {% if current_user.is_authenticated %}
+                    <span class="currency-badge"><i class="fa-solid fa-indian-rupee-sign"></i> INR Currency (₹)</span>
+                    {% endif %}
+                </div>
+            </header>
+
+            <!-- Flash Alert Messages -->
+            <div class="flash-messages-container">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <i class="fa-solid {% if category == 'success' %}fa-circle-check{% elif category == 'danger' %}fa-circle-exclamation{% else %}fa-circle-info{% endif %}"></i>
+                        <span>{{ message }}</span>
+                        <button class="close-alert" onclick="this.parentElement.remove()">&times;</button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+            </div>
+
+            <!-- Page Body Content -->
+            <div class="content-body">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <!-- Floating Comparison Tray Bar (Fixed at bottom) -->
+    {% if current_user.is_authenticated %}
+    <div class="comparison-tray" id="comparisonTray" style="display: none;">
+        <div class="tray-content">
+            <div class="tray-info">
+                <i class="fa-solid fa-scale-balanced tray-icon"></i>
+                <div>
+                    <span class="tray-title">Products for Comparison (<span id="trayCount">0</span>/4)</span>
+                    <span class="tray-subtitle">Compare specifications side-by-side</span>
+                </div>
+            </div>
+            <div class="tray-items" id="trayItemsContainer">
+                <!-- Dynamically injected via JS -->
+            </div>
+            <div class="tray-actions">
+                <button class="btn btn-secondary btn-sm" onclick="clearComparisonTray()">Clear All</button>
+                <a href="{{ url_for('compare_page') }}" class="btn btn-primary btn-sm">Compare Now <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Personalized Recommendations - AI Shopping Assistant{% endblock %}
+{% block header_title %}Personalized Product Recommendations{% endblock %}
+
+{% block content %}
+<div class="recommendations-container">
+    <div class="rec-banner">
+        <i class="fa-solid fa-lightbulb rec-icon"></i>
+        <div>
+            <h2>AI Personalized Product Recommendations</h2>
+            <p>{{ recs.recommendation_reasoning }}</p>
+        </div>
+    </div>
+
+    <!-- Recommendation Buckets -->
+    <div class="rec-sections">
+
+        <!-- Top Pick Overall -->
+        {% if recs.top_pick %}
+        <div class="rec-section-card highlight-card">
+            <div class="rec-header text-primary">
+                <i class="fa-solid fa-crown"></i>
+                <div>
+                    <h3>Top Pick Overall</h3>
+                    <span>Highest customer satisfaction rating & specifications match</span>
+                </div>
+            </div>
+
+            <div class="rec-product-detail">
+                <img src="{{ recs.top_pick.image_url }}" alt="{{ recs.top_pick.name }}" class="rec-img" onerror="this.onerror=null; this.src='/static/images/no-image.png';">
+                <div class="rec-detail-body">
+                    <h4>{{ recs.top_pick.name }}</h4>
+                    <div class="rec-meta">
+                        <span class="category-badge">{{ recs.top_pick.category }}</span>
+                        <span class="rating-badge"><i class="fa-solid fa-star"></i> {{ recs.top_pick.rating }}</span>
+                        <span class="price-badge">{{ recs.top_pick.currency }}{{ "{:,.0f}".format(recs.top_pick.price) }}</span>
+                    </div>
+                    <p>{{ recs.top_pick.description }}</p>
+                    <div class="card-actions">
+                        <button class="btn btn-primary btn-sm" onclick='addToComparison({{ recs.top_pick | tojson }})'>+ Add to Compare</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Cheaper Alternative -->
+        {% if recs.cheaper_alternative %}
+        <div class="rec-section-card">
+            <div class="rec-header text-success">
+                <i class="fa-solid fa-piggy-bank"></i>
+                <div>
+                    <h3>Best Budget / Cheaper Alternative</h3>
+                    <span>Saves money without sacrificing essential performance</span>
+                </div>
+            </div>
+
+            <div class="rec-product-detail">
+                <img src="{{ recs.cheaper_alternative.image_url }}" alt="{{ recs.cheaper_alternative.name }}" class="rec-img" onerror="this.onerror=null; this.src='/static/images/no-image.png';">
+                <div class="rec-detail-body">
+                    <h4>{{ recs.cheaper_alternative.name }}</h4>
+                    <div class="rec-meta">
+                        <span class="category-badge">{{ recs.cheaper_alternative.category }}</span>
+                        <span class="rating-badge"><i class="fa-solid fa-star"></i> {{ recs.cheaper_alternative.rating }}</span>
+                        <span class="price-badge text-success">{{ recs.cheaper_alternative.currency }}{{ "{:,.0f}".format(recs.cheaper_alternative.price) }}</span>
+                    </div>
+                    <p>{{ recs.cheaper_alternative.description }}</p>
+                    <div class="card-actions">
+                        <button class="btn btn-outline-primary btn-sm" onclick='addToComparison({{ recs.cheaper_alternative | tojson }})'>+ Add to Compare</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Premium Upgrade -->
+        {% if recs.premium_upgrade %}
+        <div class="rec-section-card">
+            <div class="rec-header text-warning">
+                <i class="fa-solid fa-gem"></i>
+                <div>
+                    <h3>Premium Feature Upgrade</h3>
+                    <span>Pro-grade performance, OLED displays & flagship build</span>
+                </div>
+            </div>
+
+            <div class="rec-product-detail">
+                <img src="{{ recs.premium_upgrade.image_url }}" alt="{{ recs.premium_upgrade.name }}" class="rec-img" onerror="this.onerror=null; this.src='/static/images/no-image.png';">
+                <div class="rec-detail-body">
+                    <h4>{{ recs.premium_upgrade.name }}</h4>
+                    <div class="rec-meta">
+                        <span class="category-badge">{{ recs.premium_upgrade.category }}</span>
+                        <span class="rating-badge"><i class="fa-solid fa-star"></i> {{ recs.premium_upgrade.rating }}</span>
+                        <span class="price-badge">{{ recs.premium_upgrade.currency }}{{ "{:,.0f}".format(recs.premium_upgrade.price) }}</span>
+                    </div>
+                    <p>{{ recs.premium_upgrade.description }}</p>
+                    <div class="card-actions">
+                        <button class="btn btn-outline-primary btn-sm" onclick='addToComparison({{ recs.premium_upgrade | tojson }})'>+ Add to Compare</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Similar Picks Grid -->
+        {% if recs.similar_picks %}
+        <div class="section-container mt-4">
+            <h3><i class="fa-solid fa-list"></i> Similar Choices in Category</h3>
+            <div class="products-grid">
+                {% for product in recs.similar_picks %}
+                <div class="product-card">
+                    <div class="card-image-wrapper">
+                        <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-img" onerror="this.onerror=null; this.src='/static/images/no-image.png';">
+                    </div>
+                    <div class="card-content">
+                        <h4 class="product-title">{{ product.name }}</h4>
+                        <div class="card-footer">
+                            <span class="price-amount">{{ product.currency }}{{ "{:,.0f}".format(product.price) }}</span>
+                            <button class="btn btn-outline-primary btn-sm" onclick='addToComparison({{ product | tojson }})'>+ Compare</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

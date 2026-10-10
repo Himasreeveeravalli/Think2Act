@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 350" width="100%" height="100%">
+  <defs>
+    <linearGradient id="headGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="#ecfdf5" rx="16"/>
+  <!-- Headband arc -->
+  <path d="M 140 180 C 140 70, 360 70, 360 180" fill="none" stroke="#1e293b" stroke-width="24" stroke-linecap="round"/>
+  <!-- Cushion padding -->
+  <path d="M 160 140 C 160 90, 340 90, 340 140" fill="none" stroke="#334155" stroke-width="12"/>
+  <!-- Left Ear Cup -->
+  <rect x="110" y="150" width="55" height="95" rx="26" fill="url(#headGrad)"/>
+  <rect x="135" y="160" width="25" height="75" rx="12" fill="#065f46"/>
+  <!-- Right Ear Cup -->
+  <rect x="335" y="150" width="55" height="95" rx="26" fill="url(#headGrad)"/>
+  <rect x="340" y="160" width="25" height="75" rx="12" fill="#065f46"/>
+  <!-- Label -->
+  <text x="250" y="305" font-family="system-ui, sans-serif" font-weight="bold" font-size="16" fill="#047857" text-anchor="middle">WIRELESS ANC HEADPHONES</text>
+</svg>

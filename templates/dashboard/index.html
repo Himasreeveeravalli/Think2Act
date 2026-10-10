@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - AI Shopping Assistant{% endblock %}
+{% block header_title %}Product Search Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-hero">
+    <div class="hero-content">
+        <span class="hero-badge"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Multi-Agent Shopping Engine</span>
+        <h1>Welcome back, <span class="accent-text">{{ current_user.full_name }}</span>!</h1>
+        <p>Describe what product you're looking for in plain, natural language. Our agents will extract specifications, parse budget constraints, and search top market feeds.</p>
+    </div>
+
+    <!-- Natural Language Search Bar -->
+    <div class="nl-search-card">
+        <form action="{{ url_for('search') }}" method="GET" class="nl-search-form">
+            <div class="search-input-group">
+                <i class="fa-solid fa-robot search-ai-icon"></i>
+                <input type="text" name="q" id="nlQueryInput" class="nl-input" placeholder="e.g. Find laptops under ₹50,000 with 16GB RAM and 512GB SSD..." required autocomplete="off">
+                <button type="submit" class="btn btn-primary search-submit-btn">
+                    <i class="fa-solid fa-magnifying-glass"></i> Search
+                </button>
+            </div>
+        </form>
+
+        <!-- Example Search Prompt Chips -->
+        <div class="example-prompts">
+            <span class="prompt-label"><i class="fa-solid fa-bolt"></i> Try Example Prompts:</span>
+            <div class="prompt-chips">
+                <button type="button" class="chip" onclick="setSearchPrompt('Show me all laptops under ₹10,000')">"Laptops under ₹10,000"</button>
+                <button type="button" class="chip" onclick="setSearchPrompt('Find laptops under ₹50,000 with 16GB RAM and 512GB SSD')">"Laptops under ₹50k with 16GB RAM"</button>
+                <button type="button" class="chip" onclick="setSearchPrompt('Show HP laptops under ₹40,000')">"HP laptops under ₹40,000"</button>
+                <button type="button" class="chip" onclick="setSearchPrompt('Show smartphones under ₹20,000 with good camera')">"Smartphones under ₹20,000"</button>
+                <button type="button" class="chip" onclick="setSearchPrompt('Find headphones with noise cancellation')">"Headphones with ANC"</button>
+                <button type="button" class="chip" onclick="setSearchPrompt('Find smartwatches with long battery life')">"Smartwatches with long battery"</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Category Navigation Grid -->
+<div class="section-container">
+    <div class="section-header">
+        <h3><i class="fa-solid fa-layer-group"></i> Browse Product Categories</h3>
+        <a href="{{ url_for('search') }}" class="view-all-link">View All Products &rarr;</a>
+    </div>
+
+    <div class="category-grid">
+        <a href="{{ url_for('search', category='Laptops') }}" class="category-card">
+            <div class="cat-icon-wrapper"><i class="fa-solid fa-laptop"></i></div>
+            <div class="cat-info">
+                <h4>Laptops</h4>
+                <span>Apple, HP, Dell, Lenovo, ASUS</span>
+            </div>
+        </a>
+
+        <a href="{{ url_for('search', category='Smartphones') }}" class="category-card">
+            <div class="cat-icon-wrapper"><i class="fa-solid fa-mobile-screen-button"></i></div>
+            <div class="cat-info">
+                <h4>Smartphones</h4>
+                <span>iPhone, Samsung, OnePlus, Pixel</span>
+            </div>
+        </a>
+
+        <a href="{{ url_for('search', category='Headphones') }}" class="category-card">
+            <div class="cat-icon-wrapper"><i class="fa-solid fa-headphones"></i></div>
+            <div class="cat-info">
+                <h4>Headphones & Audio</h4>
+                <span>Sony, Bose, Apple, boAt, Anker</span>
+            </div>
+        </a>
+
+        <a href="{{ url_for('search', category='Smartwatches') }}" class="category-card">
+            <div class="cat-icon-wrapper"><i class="fa-solid fa-stopwatch"></i></div>
+            <div class="cat-info">
+                <h4>Smartwatches</h4>
+                <span>Apple Watch, Galaxy Watch, Garmin</span>
+            </div>
+        </a>
+
+        <a href="{{ url_for('search', category='Tablets') }}" class="category-card">
+            <div class="cat-icon-wrapper"><i class="fa-solid fa-tablet-screen-button"></i></div>
+            <div class="cat-info">
+                <h4>Tablets</h4>
+                <span>iPad Air, Galaxy Tab, Xiaomi Pad</span>
+            </div>
+        </a>
+    </div>
+</div>
+
+<!-- Top Featured Recommendations Grid -->
+<div class="section-container">
+    <div class="section-header">
+        <h3><i class="fa-solid fa-fire"></i> Recommended Products</h3>
+        <a href="{{ url_for('recommendations_page') }}" class="view-all-link">View AI Recommendations &rarr;</a>
+    </div>
+
+    <div class="products-grid">
+        {% for product in featured_products %}
+        <div class="product-card">
+            <div class="card-image-wrapper">
+                <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-img" onerror="this.onerror=null; this.src='/static/images/no-image.png';">
+                <span class="source-tag {{ 'live-tag' if product.is_live else 'demo-tag' }}">
+                    <i class="fa-solid {% if product.is_live %}fa-globe{% else %}fa-box{% endif %}"></i> {{ product.source }}
+                </span>
+            </div>
+
+            <div class="card-content">
+                <div class="card-meta">
+                    <span class="category-badge">{{ product.category }}</span>
+                    <span class="rating-badge"><i class="fa-solid fa-star"></i> {{ product.rating }}</span>
+                </div>
+
+                <h4 class="product-title" title="{{ product.name }}">{{ product.name }}</h4>
+
+                <div class="specs-preview">
+                    {% for key, val in product.specs.items() %}
+                        {% if loop.index <= 3 %}
+                        <span class="spec-pill"><i class="fa-solid fa-check"></i> {{ key }}: {{ val }}</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="card-footer">
+                    <div class="price-container">
+                        <span class="currency-symbol">{{ product.currency }}</span>
+                        <span class="price-amount">{{ "{:,.0f}".format(product.price) }}</span>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="btn btn-outline-primary btn-icon" onclick='addToComparison({{ product | tojson }})' title="Add to Compare">
+                            <i class="fa-solid fa-plus"></i> Compare
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

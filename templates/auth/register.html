@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - AI Shopping Assistant{% endblock %}
+{% block header_title %}User Registration{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-icon-wrapper">
+                <i class="fa-solid fa-user-plus"></i>
+            </div>
+            <h2>Create New Account</h2>
+            <p>Join the AI-powered smart product search & comparison studio.</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('register') }}" class="auth-form" onsubmit="return validateRegistrationForm()">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+            <div class="form-group">
+                <label for="full_name"><i class="fa-solid fa-user"></i> Full Name</label>
+                <input type="text" id="full_name" name="full_name" class="form-control" placeholder="John Doe" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="email"><i class="fa-solid fa-envelope"></i> Email Address</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="name@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password"><i class="fa-solid fa-key"></i> Password</label>
+                <div class="password-input-wrapper">
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Minimum 6 characters" required oninput="checkPasswordStrength(this.value)">
+                    <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('password', this)">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+                <div class="strength-meter">
+                    <div class="strength-bar" id="strengthBar"></div>
+                </div>
+                <span class="strength-text" id="strengthText">Password Strength: Weak</span>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password"><i class="fa-solid fa-check-double"></i> Confirm Password</label>
+                <div class="password-input-wrapper">
+                    <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Re-enter password" required oninput="validatePasswordMatch()">
+                    <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('confirm_password', this)">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+                <span class="validation-msg" id="matchMsg"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">
+                Create Account <i class="fa-solid fa-user-check"></i>
+            </button>
+
+            <div class="auth-footer">
+                <p>Already registered? <a href="{{ url_for('login') }}">Sign In here</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

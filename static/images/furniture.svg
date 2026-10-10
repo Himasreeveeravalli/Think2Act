@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 350" width="100%" height="100%">
+  <defs>
+    <linearGradient id="chairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d97706"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="#fffbeb" rx="16"/>
+  <!-- Headrest -->
+  <rect x="210" y="30" width="80" height="35" rx="10" fill="#1e293b"/>
+  <!-- Backrest -->
+  <path d="M 200 70 L 300 70 L 290 180 L 210 180 Z" fill="url(#chairGrad)" rx="10"/>
+  <!-- Armrests -->
+  <rect x="175" y="140" width="20" height="40" rx="6" fill="#334155"/>
+  <rect x="305" y="140" width="20" height="40" rx="6" fill="#334155"/>
+  <!-- Seat Base Cushion -->
+  <rect x="180" y="180" width="140" height="30" rx="8" fill="#1e293b"/>
+  <!-- Cylinder Stand -->
+  <rect x="240" y="210" width="20" height="50" fill="#475569"/>
+  <!-- 5-Star Wheels Base -->
+  <path d="M 170 270 L 330 270 M 200 280 L 300 260 M 300 280 L 200 260" stroke="#334155" stroke-width="8" stroke-linecap="round"/>
+  <!-- Label -->
+  <text x="250" y="315" font-family="system-ui, sans-serif" font-weight="bold" font-size="16" fill="#b45309" text-anchor="middle">ERGONOMIC OFFICE CHAIR</text>
+</svg>

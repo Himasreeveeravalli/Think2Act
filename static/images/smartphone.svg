@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 350" width="100%" height="100%">
+  <defs>
+    <linearGradient id="phoneGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="#eef2ff" rx="16"/>
+  <!-- Phone Body -->
+  <rect x="175" y="30" width="150" height="260" rx="24" fill="#0f172a"/>
+  <!-- Phone Screen -->
+  <rect x="183" y="40" width="134" height="240" rx="18" fill="url(#phoneGrad)"/>
+  <!-- Camera Pill -->
+  <rect x="225" y="48" width="50" height="12" rx="6" fill="#0f172a"/>
+  <!-- Camera lens inside -->
+  <circle cx="240" cy="54" r="3" fill="#38bdf8"/>
+  <circle cx="260" cy="54" r="3" fill="#a78bfa"/>
+  <!-- App UI placeholders -->
+  <rect x="195" y="90" width="110" height="40" rx="10" fill="#ffffff" opacity="0.2"/>
+  <rect x="195" y="140" width="50" height="50" rx="12" fill="#ffffff" opacity="0.3"/>
+  <rect x="255" y="140" width="50" height="50" rx="12" fill="#ffffff" opacity="0.3"/>
+  <rect x="195" y="200" width="110" height="60" rx="12" fill="#ffffff" opacity="0.2"/>
+  <!-- Label -->
+  <text x="250" y="320" font-family="system-ui, sans-serif" font-weight="bold" font-size="16" fill="#4338ca" text-anchor="middle">FLAGSHIP SMARTPHONE</text>
+</svg>
